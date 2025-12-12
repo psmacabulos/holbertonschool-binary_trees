@@ -1,0 +1,142 @@
+#!/bin/bash
+# start.sh - Scaffold Holberton Binary Trees project structure
+# --------------------------------------------
+# This script creates the folder, README, header file,
+# and 18 exercise .c files with function stubs.
+# Run it on Ubuntu with:
+#   chmod +x start.sh
+#   ./start.sh
+# --------------------------------------------
+
+# Create main project folder
+mkdir -p binary_trees
+cd binary_trees || exit  # '|| exit' ensures script stops if cd fails
+
+# Create README.md with project description
+cat > README.md << 'EOF'
+# Binary Trees Project
+
+This project implements binary tree data structures and algorithms in C.
+Each file corresponds to a specific exercise, following Holberton project style.
+EOF
+
+# Create header file with struct + prototypes
+cat > binary_trees.h << 'EOF'
+#ifndef BINARY_TREES_H
+#define BINARY_TREES_H
+
+#include <stdio.h>
+#include <stdlib.h>
+
+/**
+ * struct binary_tree_s - Binary tree node
+ * @n: Integer stored in the node
+ * @parent: Pointer to the parent node
+ * @left: Pointer to the left child node
+ * @right: Pointer to the right child node
+ */
+struct binary_tree_s
+{
+    int n;
+    struct binary_tree_s *parent;
+    struct binary_tree_s *left;
+    struct binary_tree_s *right;
+};
+
+typedef struct binary_tree_s binary_tree_t;
+
+/* Function prototypes for all 18 exercises */
+binary_tree_t *binary_tree_node(binary_tree_t *parent, int value);
+binary_tree_t *binary_tree_insert_left(binary_tree_t *parent, int value);
+binary_tree_t *binary_tree_insert_right(binary_tree_t *parent, int value);
+void binary_tree_delete(binary_tree_t *tree);
+int binary_tree_is_leaf(const binary_tree_t *node);
+int binary_tree_is_root(const binary_tree_t *node);
+void binary_tree_preorder(const binary_tree_t *tree, void (*func)(int));
+void binary_tree_inorder(const binary_tree_t *tree, void (*func)(int));
+void binary_tree_postorder(const binary_tree_t *tree, void (*func)(int));
+size_t binary_tree_height(const binary_tree_t *tree);
+size_t binary_tree_depth(const binary_tree_t *tree);
+size_t binary_tree_size(const binary_tree_t *tree);
+size_t binary_tree_leaves(const binary_tree_t *tree);
+size_t binary_tree_nodes(const binary_tree_t *tree);
+int binary_tree_balance(const binary_tree_t *tree);
+int binary_tree_is_full(const binary_tree_t *tree);
+int binary_tree_is_perfect(const binary_tree_t *tree);
+binary_tree_t *binary_tree_sibling(binary_tree_t *node);
+binary_tree_t *binary_tree_uncle(binary_tree_t *node);
+
+#endif /* BINARY_TREES_H */
+EOF
+
+# Array of exercises: filename, function name, description
+exercises=(
+"0-binary_tree_node.c binary_tree_node 'Create a binary tree node'"
+"1-binary_tree_insert_left.c binary_tree_insert_left 'Insert node as left child'"
+"2-binary_tree_insert_right.c binary_tree_insert_right 'Insert node as right child'"
+"3-binary_tree_delete.c binary_tree_delete 'Delete entire binary tree'"
+"4-binary_tree_is_leaf.c binary_tree_is_leaf 'Check if node is a leaf'"
+"5-binary_tree_is_root.c binary_tree_is_root 'Check if node is a root'"
+"6-binary_tree_preorder.c binary_tree_preorder 'Preorder traversal'"
+"7-binary_tree_inorder.c binary_tree_inorder 'Inorder traversal'"
+"8-binary_tree_postorder.c binary_tree_postorder 'Postorder traversal'"
+"9-binary_tree_height.c binary_tree_height 'Measure height of tree'"
+"10-binary_tree_depth.c binary_tree_depth 'Measure depth of node'"
+"11-binary_tree_size.c binary_tree_size 'Measure size of tree'"
+"12-binary_tree_leaves.c binary_tree_leaves 'Count leaves in tree'"
+"13-binary_tree_nodes.c binary_tree_nodes 'Count nodes with children'"
+"14-binary_tree_balance.c binary_tree_balance 'Measure balance factor'"
+"15-binary_tree_is_full.c binary_tree_is_full 'Check if tree is full'"
+"16-binary_tree_is_perfect.c binary_tree_is_perfect 'Check if tree is perfect'"
+"17-binary_tree_sibling.c binary_tree_sibling 'Find sibling of node'"
+"18-binary_tree_uncle.c binary_tree_uncle 'Find uncle of node'"
+)
+
+# Loop through exercises and create .c files with stubs
+for ex in "${exercises[@]}"; do
+    set -- $ex  # split string into $1=filename, $2=function, $3+=description
+    fname=$1
+    func=$2
+    desc=$3
+
+    cat > "$fname" << EOF
+#include "binary_trees.h"
+
+/**
+ * $func - $desc
+ * @tree: Pointer to the tree/node (parameters vary by function)
+ * @value: Value to store (if applicable)
+ *
+ * Return: Depends on function (pointer, int, or void)
+ */
+${func}  /* TODO: Implement function */
+{
+    /* TODO: Write logic */
+    return (0); /* placeholder */
+}
+EOF
+done
+
+# Create a simple test main.c
+cat > main.c << 'EOF'
+#include "binary_trees.h"
+
+/**
+ * main - Entry point for testing
+ *
+ * Return: Always 0
+ */
+int main(void)
+{
+    binary_tree_t *root;
+
+    root = binary_tree_node(NULL, 98);
+    if (root == NULL)
+        return (1);
+
+    printf("Root node created with value: %d\n", root->n);
+    return (0);
+}
+EOF
+
+echo "✅ Binary Trees project scaffold created with 18 exercises!"
